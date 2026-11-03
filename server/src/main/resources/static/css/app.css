@@ -220,7 +220,14 @@ dl.kv dd { margin: 0; font-weight: 500; }
 @media print {
     body { background: #fff; }
     .print-bar, .no-print { display: none !important; }
-    .certificate { box-shadow: none; margin: 0; width: 100%; }
+    .certificate { box-shadow: none; margin: 0; width: 100%; padding: 8px; break-inside: avoid; }
+    /* Fit one A4 landscape page: the screen layout is taller than the printable area */
+    .certificate .frame { min-height: 0; padding: 28px 48px 20px; }
+    .cert-kind { margin: 1rem 0 0.8rem; }
+    .cert-body .name { margin: 0.3rem 0 0.1rem; }
+    .cert-foot { margin-top: 1.2rem; }
+    .sig .line { margin-top: 1.6rem; }
+    .cert-seal-line { margin-top: 0.8rem; }
     @page { size: A4 landscape; margin: 8mm; }
 }
 
