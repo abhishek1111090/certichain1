@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Classic Spring XML configuration, loaded with @ImportResource next to the
+    annotation-based beans. Shows setter injection, constructor injection and the
+    init-method / destroy-method bean life-cycle callbacks.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- The issuing institution printed on every certificate (setter injection). -->
+    <bean id="institutionProfile" class="com.certichain.server.config.InstitutionProfile"
+          init-method="init" destroy-method="shutdown">
+        <property name="name" value="CertiChain Institute of Technology"/>
+        <property name="shortCode" value="CIT"/>
+        <property name="address" value="Jaipur, Rajasthan, India"/>
+        <property name="registrarName" value="Dr. A. K. Registrar"/>
+        <property name="registrarTitle" value="Controller of Examinations"/>
+        <property name="website" value="www.certichain.example"/>
+    </bean>
+
+    <!-- The multithreaded ledger auditor from the core module (constructor injection). -->
+    <bean id="chainVerifier" class="com.certichain.core.chain.ChainVerifier">
+        <constructor-arg type="int" value="4"/>
+    </bean>
+</beans>

@@ -1,0 +1,8 @@
+<nav class="pub-nav">
+    <a class="brand" href="${ctx}/"><%@ include file="/WEB-INF/jsp/fragments/brand.jspf" %>
+        <span>CertiChain<small><c:out value="${institution.name}"/></small></span></a>
+    <div>
+        <a class="btn btn-ghost btn-sm" href="${ctx}/api/v1/ledger/head">Ledger API</a>
+        <a class="btn btn-primary btn-sm" href="${ctx}/login">Registrar sign in</a>
+    </div>
+</nav>

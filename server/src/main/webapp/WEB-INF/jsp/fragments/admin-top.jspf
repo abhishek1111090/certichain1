@@ -1,0 +1,63 @@
+<%-- Opens the admin layout: sidebar + top bar. Expects request attributes: nav, pageTitle. --%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%@ include file="/WEB-INF/jsp/fragments/head.jspf" %>
+    <title><c:out value="${pageTitle}"/> &middot; CertiChain Admin</title>
+</head>
+<body>
+<div class="shell">
+    <aside class="side">
+        <a class="brand" href="${ctx}/admin/dashboard"><%@ include file="/WEB-INF/jsp/fragments/brand.jspf" %>
+            <span>CertiChain<small>Registrar Console</small></span></a>
+        <nav class="nav">
+            <a href="${ctx}/admin/dashboard" class="${nav == 'dashboard' ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                Dashboard</a>
+            <a href="${ctx}/admin/certificates/new" class="${nav == 'issue' ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+                Issue certificate</a>
+            <a href="${ctx}/admin/certificates" class="${nav == 'certificates' ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+                Certificates</a>
+            <a href="${ctx}/admin/ledger" class="${nav == 'ledger' ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><path d="M10 6.5h4a3 3 0 0 1 3 3V14"/></svg>
+                Ledger explorer</a>
+            <a href="${ctx}/admin/integrity" class="${nav == 'integrity' ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+                Integrity audit</a>
+            <a href="${ctx}/admin/audit" class="${nav == 'audit' ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>
+                Audit trail</a>
+            <div class="sep"></div>
+            <a href="${ctx}/admin/export/certificates.csv">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+                Export register (CSV)</a>
+            <a href="${ctx}/" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h6v6M10 14L20 4M19 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h6"/></svg>
+                Public verify portal</a>
+        </nav>
+        <div class="side-foot"><c:out value="${institution.name}"/><br>Spring Boot &middot; JSP &middot; JDBC</div>
+    </aside>
+    <div class="main">
+        <c:if test="${integrity != null && !integrity.intact}">
+            <div class="tamper-banner">
+                <span>&#9888; Ledger integrity breach: <c:out value="${integrity.summary()}"/></span>
+                <a href="${ctx}/admin/integrity">View report</a>
+            </div>
+        </c:if>
+        <header class="topbar">
+            <h1><c:out value="${pageTitle}"/></h1>
+            <div class="user">
+                <div class="avatar"><c:out value="${sessionScope.admin.initials}"/></div>
+                <div class="who"><c:out value="${sessionScope.admin.fullName}"/>
+                    <small><c:out value="${sessionScope.admin.role}"/> &middot; @<c:out value="${sessionScope.admin.username}"/></small></div>
+                <form method="post" action="${ctx}/admin/logout">
+                    <input type="hidden" name="_csrf" value="${sessionScope.csrfToken}">
+                    <button class="btn btn-ghost btn-sm" type="submit">Sign out</button>
+                </form>
+            </div>
+        </header>
+        <main class="content">
+            <c:if test="${not empty success}"><div class="alert alert-ok"><c:out value="${success}"/></div></c:if>
+            <c:if test="${not empty error}"><div class="alert alert-bad"><c:out value="${error}"/></div></c:if>

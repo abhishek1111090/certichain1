@@ -1,0 +1,17 @@
+# Copy to desktop.properties (in the folder you start the desktop app from) to override defaults.
+
+# Same database as the Spring Boot server (default shown). AUTO_SERVER lets both apps open it at once.
+#db.url=jdbc:h2:file:C:/Users/<you>/certichain-data/certichain;AUTO_SERVER=TRUE
+#db.user=sa
+#db.password=
+
+# MySQL instead (also add mysql-connector-j to desktop/pom.xml):
+#db.url=jdbc:mysql://localhost:3306/certichain
+#db.user=root
+#db.password=root
+
+# Prefix of new certificate numbers; keep it equal to shortCode in server/src/main/resources/beans.xml
+institution.code=CIT
+
+# Where the "Open verification page" button points
+portal.url=http://localhost:8080
