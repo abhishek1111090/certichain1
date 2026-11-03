@@ -26,21 +26,27 @@ public class DataSeeder implements ApplicationRunner {
     private final LedgerRepository ledger;
     private final CertificateService certificateService;
     private final boolean seedDemo;
+    private final String adminPassword;
+    private final String registrarPassword;
 
     public DataSeeder(UserRepository users, LedgerRepository ledger, CertificateService certificateService,
-                      @Value("${certichain.seed-demo:true}") boolean seedDemo) {
+                      @Value("${certichain.seed-demo:true}") boolean seedDemo,
+                      @Value("${certichain.admin-password:admin123}") String adminPassword,
+                      @Value("${certichain.registrar-password:registrar123}") String registrarPassword) {
         this.users = users;
         this.ledger = ledger;
         this.certificateService = certificateService;
         this.seedDemo = seedDemo;
+        this.adminPassword = adminPassword;
+        this.registrarPassword = registrarPassword;
     }
 
     @Override
     public void run(ApplicationArguments args) {
         if (users.count() == 0) {
-            users.insert("admin", "Dr. Anita Sharma", PasswordHasher.hash("admin123".toCharArray()), Role.ADMIN);
-            users.insert("registrar", "Rohit Verma", PasswordHasher.hash("registrar123".toCharArray()), Role.STAFF);
-            log.info("Created default accounts admin/admin123 and registrar/registrar123 - change them before real use");
+            users.insert("admin", "Dr. Anita Sharma", PasswordHasher.hash(adminPassword.toCharArray()), Role.ADMIN);
+            users.insert("registrar", "Rohit Verma", PasswordHasher.hash(registrarPassword.toCharArray()), Role.STAFF);
+            log.info("Created the default accounts 'admin' and 'registrar'");
         }
         if (seedDemo && ledger.count() == 0) {
             seedCertificates();

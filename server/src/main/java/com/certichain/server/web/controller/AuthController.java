@@ -26,7 +26,7 @@ public class AuthController {
     private final boolean demoMode;
 
     public AuthController(AuthService authService, InstitutionProfile institution,
-                          @Value("${certichain.seed-demo:true}") boolean demoMode) {
+                          @Value("${certichain.show-demo-accounts:true}") boolean demoMode) {
         this.authService = authService;
         this.institution = institution;
         this.demoMode = demoMode;

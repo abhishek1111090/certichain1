@@ -1,0 +1,6 @@
+**/target
+docs
+*.md
+.git
+.idea
+.vscode

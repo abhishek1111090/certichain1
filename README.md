@@ -142,6 +142,19 @@ These are demo accounts created on first start; change them before any real use.
 **Deploying to an external Tomcat 10.1:** the WAR is built for this as well (`SpringBootServletInitializer`,
 Tomcat marked `provided`): copy `certichain-server.war` into Tomcat's `webapps/`. The tested path is `java -jar`.
 
+**Public link (Render, free):** the repository root has a `render.yaml` Blueprint and
+`certichain/Dockerfile` builds the server.
+
+1. Sign in at <https://render.com> with GitHub and allow it to read this repository.
+2. *New* → *Blueprint* → choose the repository and the branch that holds this project → *Apply*.
+3. Wait for the first build (about 5-10 minutes). The site appears at `https://certichain-xxxx.onrender.com`.
+4. Open the service → *Environment* to read the generated `ADMIN_PASSWORD` and `REGISTRAR_PASSWORD`.
+
+On the free plan the service sleeps after 15 minutes without visits (the next visit takes
+about a minute to wake it), and the H2 database lives inside the container, so it starts fresh,
+with the 12 demo certificates, after every redeploy or restart. For permanent data, point
+`spring.datasource.*` at a hosted MySQL database with the `mysql` profile.
+
 ## 5. Demo script (5 minutes, for the viva)
 
 1. **Public portal**: open <http://localhost:8080>, then open any certificate from the admin list in
