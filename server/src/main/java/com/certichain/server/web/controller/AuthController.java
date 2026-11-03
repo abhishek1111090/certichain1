@@ -5,6 +5,7 @@ import com.certichain.server.model.AdminSession;
 import com.certichain.server.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +23,13 @@ public class AuthController {
 
     private final AuthService authService;
     private final InstitutionProfile institution;
+    private final boolean demoMode;
 
-    public AuthController(AuthService authService, InstitutionProfile institution) {
+    public AuthController(AuthService authService, InstitutionProfile institution,
+                          @Value("${certichain.seed-demo:true}") boolean demoMode) {
         this.authService = authService;
         this.institution = institution;
+        this.demoMode = demoMode;
     }
 
     @GetMapping("/login")
@@ -35,6 +39,7 @@ public class AuthController {
         }
         model.addAttribute("next", safeNext(next));
         model.addAttribute("institution", institution);
+        model.addAttribute("demoMode", demoMode);
         return "login";
     }
 
@@ -42,6 +47,7 @@ public class AuthController {
     public String login(@RequestParam String username, @RequestParam String password,
                         @RequestParam(required = false) String next, HttpServletRequest request, Model model) {
         model.addAttribute("institution", institution);
+        model.addAttribute("demoMode", demoMode);
         model.addAttribute("next", safeNext(next));
         model.addAttribute("username", username);
         Optional<AdminSession> admin;
@@ -52,7 +58,7 @@ public class AuthController {
             return "login";
         }
         if (admin.isEmpty()) {
-            model.addAttribute("error", "Invalid username or password.");
+            model.addAttribute("error", "Invalid username or password. Accounts are created by the administrator; there is no self sign-up.");
             return "login";
         }
         // Session fixation defence: throw away any pre-login session and start a fresh one.

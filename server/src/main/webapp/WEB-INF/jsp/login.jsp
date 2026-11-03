@@ -31,6 +31,13 @@
                 <input type="password" id="password" name="password" required autocomplete="current-password">
             </div>
             <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+            <c:if test="${demoMode}">
+                <div class="alert alert-warn small" style="margin:1rem 0 0">
+                    <b>Demo accounts</b> (created on first start):<br>
+                    <code>admin</code> / <code>admin123</code> &middot; administrator<br>
+                    <code>registrar</code> / <code>registrar123</code> &middot; staff
+                </div>
+            </c:if>
             <p class="hint" style="margin-top:1rem">Five wrong passwords lock the account for five minutes.</p>
             <p class="small" style="margin-top:1.5rem"><a href="${ctx}/">&larr; Back to verification portal</a></p>
         </form>

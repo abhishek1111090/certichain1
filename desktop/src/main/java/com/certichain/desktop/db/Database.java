@@ -20,6 +20,11 @@ import java.util.Properties;
  */
 public final class Database {
 
+    static {
+        // Same as the server: share the H2 file over loopback, never the (changing) Wi-Fi address.
+        System.setProperty("h2.bindAddress", "127.0.0.1");
+    }
+
     private final String url;
     private final String user;
     private final String password;

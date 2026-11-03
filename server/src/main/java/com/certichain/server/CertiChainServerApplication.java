@@ -26,6 +26,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAsync
 public class CertiChainServerApplication extends SpringBootServletInitializer {
 
+    static {
+        // H2 AUTO_SERVER advertises this address to the desktop client. The default is the
+        // Wi-Fi address, which goes stale when the network changes and exposes the database
+        // to the LAN; loopback is stable and reachable only from this PC.
+        System.setProperty("h2.bindAddress", "127.0.0.1");
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(CertiChainServerApplication.class, args);
     }
