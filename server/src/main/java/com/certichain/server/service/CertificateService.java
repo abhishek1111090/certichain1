@@ -44,11 +44,25 @@ public class CertificateService {
     @Audited("ISSUE_CERTIFICATE")
     @Transactional
     public Certificate issue(Certificate draft, String actor) {
+        return doIssue(draft, actor, null);
+    }
+
+    /** Issues under a chosen number; used only for the fixed demo data. */
+    @Audited("ISSUE_CERTIFICATE")
+    @Transactional
+    public Certificate issueWithNumber(Certificate draft, String actor, String certNo) {
+        if (certificates.exists(certNo)) {
+            throw new InvalidCertificateException(List.of("Certificate number " + certNo + " is already used"));
+        }
+        return doIssue(draft, actor, certNo);
+    }
+
+    private Certificate doIssue(Certificate draft, String actor, String presetNo) {
         CertificateValidator.validate(draft);
-        String certNo;
-        do {
+        String certNo = presetNo;
+        while (certNo == null || (presetNo == null && certificates.exists(certNo))) {
             certNo = CertNoGenerator.next(institution.getShortCode());
-        } while (certificates.exists(certNo));
+        }
 
         draft.setCertNo(certNo);
         draft.setIssuedBy(actor);

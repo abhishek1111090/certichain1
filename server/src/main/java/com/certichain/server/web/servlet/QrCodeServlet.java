@@ -11,6 +11,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.io.IOException;
 import java.util.Map;
@@ -22,6 +24,18 @@ import java.util.Map;
  */
 @WebServlet(name = "qrCodeServlet", urlPatterns = "/qr")
 public class QrCodeServlet extends HttpServlet {
+
+    /** Optional fixed site address (certichain.public-base-url); blank = use the request's own host. */
+    private String publicBaseUrl = "";
+
+    @Override
+    public void init() {
+        WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+        if (ctx != null) {
+            String configured = ctx.getEnvironment().getProperty("certichain.public-base-url", "").trim();
+            publicBaseUrl = configured.endsWith("/") ? configured.substring(0, configured.length() - 1) : configured;
+        }
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -36,7 +50,8 @@ public class QrCodeServlet extends HttpServlet {
         } catch (NumberFormatException ignored) {
             // keep the default
         }
-        String base = req.getScheme() + "://" + req.getServerName()
+        String base = !publicBaseUrl.isEmpty() ? publicBaseUrl
+                : req.getScheme() + "://" + req.getServerName()
                 + (isDefaultPort(req) ? "" : ":" + req.getServerPort()) + req.getContextPath();
         String url = base + "/verify/" + certNo + "?via=qr";
         try {
