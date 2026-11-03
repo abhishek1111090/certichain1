@@ -1,0 +1,18 @@
+# Render Blueprint for the CertiChain web server.
+# Render > New > Blueprint > pick this repository > Apply.
+services:
+  - type: web
+    name: certichain
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /actuator/health
+    envVars:
+      # Render generates random passwords; read them under Environment in the dashboard.
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      - key: REGISTRAR_PASSWORD
+        generateValue: true
+      - key: SHOW_DEMO_ACCOUNTS
+        value: "false"

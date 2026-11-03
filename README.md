@@ -109,7 +109,8 @@ block #1                     block #2                     block #3 (REVOKE)
 **Prerequisites:** JDK 17 or newer (tested on JDK 25). Maven is **not** required, the wrapper downloads it.
 
 ```bash
-cd certichain
+git clone https://github.com/abhishek1111090/certichain1.git
+cd certichain1
 ./mvnw clean install          # Windows: mvnw.cmd clean install   (builds and runs the unit tests)
 ```
 
@@ -142,11 +143,11 @@ These are demo accounts created on first start; change them before any real use.
 **Deploying to an external Tomcat 10.1:** the WAR is built for this as well (`SpringBootServletInitializer`,
 Tomcat marked `provided`): copy `certichain-server.war` into Tomcat's `webapps/`. The tested path is `java -jar`.
 
-**Public link (Render, free):** the repository root has a `render.yaml` Blueprint and
-`certichain/Dockerfile` builds the server.
+**Public link (Render, free):** `render.yaml` (a Render Blueprint) and `Dockerfile` in the
+repository root build and run the server.
 
 1. Sign in at <https://render.com> with GitHub and allow it to read this repository.
-2. *New* → *Blueprint* → choose the repository and the branch that holds this project → *Apply*.
+2. *New* → *Blueprint* → choose this repository (branch `main`) → *Apply*.
 3. Wait for the first build (about 5-10 minutes). The site appears at `https://certichain-xxxx.onrender.com`.
 4. Open the service → *Environment* to read the generated `ADMIN_PASSWORD` and `REGISTRAR_PASSWORD`.
 
